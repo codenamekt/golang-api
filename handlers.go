@@ -3,10 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"io"
 	"io/ioutil"
 	"net/http"
-	"github.com/gorilla/mux"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +23,7 @@ func TodoIndex(w http.ResponseWriter, r *http.Request) {
 
 func TodoShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	
+
 	todo := RepoFindTodo(vars["todoId"])
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
@@ -65,10 +65,10 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	/* t := RepoCreateTodo(todo)
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusCreated)
-	if err := json.NewEncoder(w).Encode(t); err != nil {
-		panic(err)
-	}
+	   w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	   w.WriteHeader(http.StatusCreated)
+	   if err := json.NewEncoder(w).Encode(t); err != nil {
+		   panic(err)
+	   }
 	*/
 }
