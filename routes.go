@@ -1,6 +1,10 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	"golang-api/handlers"
+)
 
 type Route struct {
 	Name        string
@@ -19,21 +23,21 @@ var routes = Routes{
 		Index,
 	},
 	Route{
-		"TodoIndex",
-		"GET",
-		"/todos",
-		TodoIndex,
-	},
-	Route{
 		"TodoCreate",
 		"POST",
 		"/todos",
 		TodoCreate,
 	},
 	Route{
-		"TodoShow",
+		"TodoRead",
 		"GET",
 		"/todos/{todoId}",
-		TodoShow,
+		TodoRead,
+	},
+	Route{
+		"TodoReadAll",
+		"GET",
+		"/todos",
+		TodoRead,
 	},
 }
