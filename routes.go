@@ -1,9 +1,8 @@
 package main
 
 import (
-	"net/http"
-
 	"golang-api/handlers"
+	"net/http"
 )
 
 type Route struct {
@@ -17,27 +16,39 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
-		"Index",
+		"DBIndex",
 		"GET",
 		"/",
-		Index,
+		handlers.DBIndex,
 	},
 	Route{
-		"TodoCreate",
+		"ColIndex",
+		"GET",
+		"/{db}",
+		handlers.ColIndex,
+	},
+	Route{
+		"DocIndex",
+		"GET",
+		"/{db}/{collection}",
+		handlers.DocIndex,
+	},
+	Route{
+		"DocPost",
 		"POST",
-		"/todos",
-		TodoCreate,
+		"/{db}/{collection}",
+		handlers.DocPost,
 	},
 	Route{
-		"TodoRead",
+		"Doc",
 		"GET",
-		"/todos/{todoId}",
-		TodoRead,
+		"/{db}/{collection}/{id}",
+		handlers.Doc,
 	},
 	Route{
-		"TodoReadAll",
-		"GET",
-		"/todos",
-		TodoRead,
+		"DocDelete",
+		"DELETE",
+		"/{db}/{collection}/{id}",
+		handlers.DocDelete,
 	},
 }
