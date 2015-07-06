@@ -57,10 +57,9 @@ func DBIndex(w http.ResponseWriter, r *http.Request) {
 func ColIndex(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
-
 	vars := mux.Vars(r)
-	names, err := session.DB(vars["db"]).CollectionNames()
 
+	names, err := s.DB(vars["db"]).CollectionNames()
 	if err != nil {
 		writeError(w, 500, "Error getting collection names")
 		return
@@ -73,10 +72,8 @@ func ColIndex(w http.ResponseWriter, r *http.Request) {
 func DocIndex(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
-
 	vars := mux.Vars(r)
-
-	c := session.DB(vars["db"]).C(vars["collection"])
+	c := s.DB(vars["db"]).C(vars["collection"])
 
 	var out []map[string]interface{}
 	err := c.Find(nil).All(&out)
@@ -98,10 +95,8 @@ func DocIndex(w http.ResponseWriter, r *http.Request) {
 func DocPost(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
-
 	vars := mux.Vars(r)
-
-	c := session.DB(vars["db"]).C(vars["collection"])
+	c := s.DB(vars["db"]).C(vars["collection"])
 
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
@@ -112,34 +107,31 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req map[string]interface{}
-
 	if err := json.Unmarshal(body, &req); err != nil {
 		writeError(w, 500, "Body invalid json")
 	}
 
 	if req["_id"] != nil {
-		fmt.Print(req)
 		id := bson.ObjectIdHex(req["_id"].(string))
-		delete(req, "_id")
-
 		if !id.Valid() {
 			writeError(w, 400, "Invalid id")
+		} else {
+			delete(req, "_id")
 		}
 
-		info, err := c.UpsertId(id, req)
+		_, err := c.UpsertId(id, req)
 		if err != nil {
 			writeError(w, 500, "Error upserting")
 			return
 		}
 
-		res, err := json.Marshal(info)
+		res, err := json.Marshal(req)
 		if err != nil {
 			writeError(w, 500, "Error stringifying query result")
 			return
 		}
 
 		writeJSON(w, 201, string(res))
-
 	} else {
 		req["_id"] = bson.NewObjectId()
 
@@ -157,18 +149,58 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 
 		writeJSON(w, 201, string(res))
 	}
+	return
 }
 
-func Doc(w http.ResponseWriter, r *http.Request) {
+func DocPut(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
-
 	vars := mux.Vars(r)
+	c := s.DB(vars["db"]).C(vars["collection"])
 
-	c := session.DB(vars["db"]).C(vars["collection"])
+	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
+	if err != nil {
+		writeError(w, 500, "Error reading request body")
+	}
+	if err := r.Body.Close(); err != nil {
+		writeError(w, 500, "Error closing request body")
+	}
+
+	var req map[string]interface{}
+	if err := json.Unmarshal(body, &req); err != nil {
+		writeError(w, 500, "Body invalid json")
+	}
 
 	id := bson.ObjectIdHex(vars["id"])
+	if !id.Valid() {
+		writeError(w, 400, "Invalid id")
+	} else {
+		req["_id"] = id
+	}
 
+	_, err = c.UpsertId(id, req)
+	if err != nil {
+		writeError(w, 500, "Error upserting")
+		return
+	}
+
+	res, err := json.Marshal(req)
+	if err != nil {
+		writeError(w, 500, "Error stringifying query result")
+		return
+	}
+
+	writeJSON(w, 201, string(res))
+	return
+}
+
+func DocGet(w http.ResponseWriter, r *http.Request) {
+	s := session.New()
+	defer s.Close()
+	vars := mux.Vars(r)
+	c := s.DB(vars["db"]).C(vars["collection"])
+
+	id := bson.ObjectIdHex(vars["id"])
 	if !id.Valid() {
 		writeError(w, 400, "Invalid id")
 	}
@@ -203,13 +235,10 @@ func Doc(w http.ResponseWriter, r *http.Request) {
 func DocDelete(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
-
 	vars := mux.Vars(r)
-
-	c := session.DB(vars["db"]).C(vars["collection"])
+	c := s.DB(vars["db"]).C(vars["collection"])
 
 	id := bson.ObjectIdHex(vars["id"])
-
 	if !id.Valid() {
 		writeError(w, 400, "Invalid id")
 	}
@@ -231,7 +260,6 @@ func DocDelete(w http.ResponseWriter, r *http.Request) {
 		writeError(w, 500, "Error communicating with database")
 		return
 	}
-
 	if n == 0 {
 		writeError(w, 404, "The id provided was not found in this database. Either the document has been deleted already or it never existed.")
 		return

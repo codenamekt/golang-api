@@ -40,10 +40,16 @@ var routes = Routes{
 		handlers.DocPost,
 	},
 	Route{
+		"DocPut",
+		"PUT",
+		"/{db}/{collection}/{id}",
+		handlers.DocPut,
+	},
+	Route{
 		"Doc",
 		"GET",
 		"/{db}/{collection}/{id}",
-		handlers.Doc,
+		handlers.DocGet,
 	},
 	Route{
 		"DocDelete",
