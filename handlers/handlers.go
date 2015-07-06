@@ -1,3 +1,5 @@
+// Defines handlers for use with mongo db.
+// Supported verbs GET, POST, PUT, DELETE.
 package handlers
 
 import (
@@ -6,6 +8,7 @@ import (
 
 var session *mgo.Session
 
+// Dial session. Clone session for creating concurrent connections to the db.
 func init() {
 	var err error
 	session, err = mgo.Dial("localhost:27017")

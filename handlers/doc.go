@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// List available documents in a collection.
 func DocIndex(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
@@ -32,6 +33,7 @@ func DocIndex(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// Add a new document to a collection if _id omitted. Otherwise, update existing document. id is not required.
 func DocPost(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
@@ -134,6 +136,18 @@ func DocPut(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// Retrieve document from database.
+//
+// Responses
+//
+// 200 Success.
+//
+// 400 Invalid id.
+//
+// 500 Error counting results. Error getting document by id. Error stringifying query result.
+//
+// 404 Document not found.
+//
 func DocGet(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
@@ -172,6 +186,18 @@ func DocGet(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// Deletes a document from the database.
+//
+// Responses
+//
+// 204 Success.
+//
+// 400 Invalid id.
+//
+// 500 Error counting results. Error communicating with database. Error removing item from database.
+//
+// 404 Document not found.
+//
 func DocDelete(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
@@ -201,7 +227,7 @@ func DocDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if n == 0 {
-		writeError(w, 404, "The id provided was not found in this database. Either the document has been deleted already or it never existed.")
+		writeError(w, 404, "Document not found")
 		return
 	}
 
