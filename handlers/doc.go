@@ -6,6 +6,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -19,6 +20,7 @@ func DocIndex(w http.ResponseWriter, r *http.Request) {
 	var out []map[string]interface{}
 	err := c.Find(nil).All(&out)
 	if err != nil {
+		log.Fatalf("ERROR: %s", err)
 		writeError(w, 500, "Error getting all documents")
 		return
 	}
