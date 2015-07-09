@@ -1,4 +1,4 @@
-package handlers
+package main
 
 import (
 	"fmt"
@@ -7,13 +7,14 @@ import (
 	"strings"
 )
 
-func DBIndex(w http.ResponseWriter, r *http.Request) {
+func ColIndex(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
+	vars := mux.Vars(r)
 
-	names, err := s.DatabaseNames()
+	names, err := s.DB(vars["db"]).CollectionNames()
 	if err != nil {
-		writeError(w, 500, "Error getting database names")
+		writeError(w, 500, "Error getting collection names")
 		return
 	}
 
@@ -21,14 +22,14 @@ func DBIndex(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func DBDelete(w http.ResponseWriter, r *http.Request) {
+func ColDelete(w http.ResponseWriter, r *http.Request) {
 	s := session.New()
 	defer s.Close()
 	vars := mux.Vars(r)
 
-	err := s.DB(vars["db"]).DropDatabase()
+	err := s.DB(vars["db"]).C(vars["collection"]).DropCollection()
 	if err != nil {
-		writeError(w, 500, "Error dropping database")
+		writeError(w, 500, "Error dropping collection")
 		return
 	}
 

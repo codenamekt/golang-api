@@ -5,6 +5,21 @@ import (
 	"net/http"
 )
 
+var routes = []struct {
+	Name        string
+	Method      string
+	Pattern     string
+	HandlerFunc http.HandlerFunc
+}{
+	{"DBIndex", "GET", "/", DBIndex},
+	{"ColIndex", "GET", "/{db}", ColIndex},
+	{"DocIndex", "GET", "/{db}/{collection}", DocIndex},
+	{"DocPost", "POST", "/{db}/{collection}", DocPost},
+	{"DocPut", "PUT", "/{db}/{collection}/{id}", DocPut},
+	{"Doc", "GET", "/{db}/{collection}/{id}", DocGet},
+	{"DocDelete", "DELETE", "/{db}/{collection}/{id}", DocDelete},
+}
+
 func NewRouter() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(true)

@@ -1,11 +1,12 @@
-package handlers
+package main
 
 import (
-	"fmt"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"net/http/httputil"
 	"testing"
 )
 
@@ -13,29 +14,30 @@ func TestDocIndex(t *testing.T) {
 	var body []byte
 	resp := httptest.NewRecorder()
 	var req *http.Request
-	url := "localhost/todo/todo"
+	url := "http://localhost/todo/todo"
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err == nil {
-		req.Header.Add("Content-Type", "application/json")
+		debug(httputil.DumpRequestOut(req, true))
 	}
 
-	DocIndex(resp, req)
+	router := mux.NewRouter()
+	var handler http.Handler
+
+	handler = DocIndex
+	router.Methods("GET").
+		Path("/{db}/{collection}").
+		Name("DocIndex").
+		Handler(handler)
+
+	router.ServeHTTP(resp, req)
 	if err == nil {
 		body, err = ioutil.ReadAll(resp.Body)
 	}
 
 	if err == nil {
-		fmt.Printf("%s", body)
+		log.Printf("\n%s", body)
 	} else {
 		log.Fatalf("ERROR: %s", err)
-	}
-}
-
-func debug(data []byte, err error) {
-	if err == nil {
-		fmt.Printf("%s\n\n", data)
-	} else {
-		log.Fatalf("%s\n\n", err)
 	}
 }

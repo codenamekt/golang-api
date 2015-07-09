@@ -1,7 +1,8 @@
-package handlers
+package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -21,4 +22,12 @@ func writeJSON(w http.ResponseWriter, status int, message string) {
 
 func writeError(w http.ResponseWriter, status int, message string) {
 	writeJSON(w, status, fmt.Sprintf("{\"error\":\"%s\"}", message))
+}
+
+func debug(data []byte, err error) {
+	if err == nil {
+		log.Printf("%s\n\n", data)
+	} else {
+		log.Fatalf("%s\n\n", err)
+	}
 }

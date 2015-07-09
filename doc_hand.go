@@ -1,4 +1,4 @@
-package handlers
+package main
 
 import (
 	"encoding/json"
@@ -17,6 +17,8 @@ func DocIndex(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
 
+	log.Println(vars["db"])
+	log.Println(vars["collection"])
 	var out []map[string]interface{}
 	err := c.Find(nil).All(&out)
 	if err != nil {
