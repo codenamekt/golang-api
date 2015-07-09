@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,14 +20,7 @@ func TestDocIndex(t *testing.T) {
 		debug(httputil.DumpRequestOut(req, true))
 	}
 
-	router := mux.NewRouter()
-	var handler http.Handler
-
-	handler = DocIndex
-	router.Methods("GET").
-		Path("/{db}/{collection}").
-		Name("DocIndex").
-		Handler(handler)
+	router := NewRouter()
 
 	router.ServeHTTP(resp, req)
 	if err == nil {
