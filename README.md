@@ -1,12 +1,12 @@
 Getting Started
 ===============
 ```go
-git clone git@github.com:codenamekt/golang-api.git
-cd golang-api
+git clone git@github.com:codenamekt/mgo-api.git
+cd mgo-api
 sh env.sh
 go get
 go build
-./golang-api
+./mgo-api
 ```
 
 Usage

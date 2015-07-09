@@ -12,7 +12,7 @@ import (
 
 // List available documents in a collection.
 func DocIndex(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
@@ -37,7 +37,7 @@ func DocIndex(w http.ResponseWriter, r *http.Request) {
 
 // Add a new document to a collection if _id omitted. Otherwise, update existing document. id is not required.
 func DocPost(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
@@ -97,7 +97,7 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func DocPut(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
@@ -151,7 +151,7 @@ func DocPut(w http.ResponseWriter, r *http.Request) {
 // 404 Document not found.
 //
 func DocGet(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
@@ -201,7 +201,7 @@ func DocGet(w http.ResponseWriter, r *http.Request) {
 // 404 Document not found.
 //
 func DocDelete(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])

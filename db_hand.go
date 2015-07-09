@@ -8,7 +8,7 @@ import (
 )
 
 func DBIndex(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 
 	names, err := s.DatabaseNames()
@@ -22,7 +22,7 @@ func DBIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func DBDelete(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 

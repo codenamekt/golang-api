@@ -8,7 +8,7 @@ import (
 )
 
 func ColIndex(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 
@@ -23,7 +23,7 @@ func ColIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func ColDelete(w http.ResponseWriter, r *http.Request) {
-	s := session.New()
+	s := session.Copy()
 	defer s.Close()
 	vars := mux.Vars(r)
 
