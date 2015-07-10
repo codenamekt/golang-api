@@ -7,7 +7,8 @@ import (
 	"strconv"
 )
 
-func writeJSON(w http.ResponseWriter, status int, message string) {
+// write to http.ResponseWriter
+func writeHttp(w http.ResponseWriter, status int, message string) {
 	// write headers
 	header := w.Header()
 	header.Add("Content-Length", strconv.Itoa(len(message)))
@@ -20,14 +21,15 @@ func writeJSON(w http.ResponseWriter, status int, message string) {
 	w.Write([]byte(message))
 }
 
+// write response as {"error": message}
 func writeError(w http.ResponseWriter, status int, message string) {
-	writeJSON(w, status, fmt.Sprintf("{\"error\":\"%s\"}", message))
+	writeHttp(w, status, fmt.Sprintf("{\"error\":\"%s\"}", message))
 }
 
 func debug(data []byte, err error) {
 	if err == nil {
-		log.Printf("%s\n\n", data)
+		log.Printf("\n%s", data)
 	} else {
-		log.Fatalf("%s\n\n", err)
+		log.Fatalf("\n%s", err)
 	}
 }

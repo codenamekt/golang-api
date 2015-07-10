@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
+	"strconv"
 	"testing"
 )
 
@@ -28,7 +29,11 @@ func TestDocIndex(t *testing.T) {
 	}
 
 	if err == nil {
-		log.Printf("\n%s", body)
+		log.Println("Return:", strconv.Itoa(resp.Code))
+		for key, value := range resp.Header() {
+			log.Println(key, value)
+		}
+		log.Println("Body:", string(body))
 	} else {
 		log.Fatalf("ERROR: %s", err)
 	}

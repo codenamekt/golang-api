@@ -31,7 +31,7 @@ func DocIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, 200, string(res))
+	writeHttp(w, 200, string(res))
 	return
 }
 
@@ -75,7 +75,7 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		writeJSON(w, 201, string(res))
+		writeHttp(w, 201, string(res))
 	} else {
 		req["_id"] = bson.NewObjectId()
 
@@ -91,7 +91,7 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		writeJSON(w, 201, string(res))
+		writeHttp(w, 201, string(res))
 	}
 	return
 }
@@ -134,7 +134,7 @@ func DocPut(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, 201, string(res))
+	writeHttp(w, 201, string(res))
 	return
 }
 
@@ -184,7 +184,7 @@ func DocGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, 200, string(res))
+	writeHttp(w, 200, string(res))
 	return
 }
 

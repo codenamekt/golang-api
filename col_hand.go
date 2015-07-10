@@ -18,7 +18,7 @@ func ColIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, 200, fmt.Sprintf("[%s]", strings.Join(names, ",")))
+	writeHttp(w, 200, fmt.Sprintf("[%s]", strings.Join(names, ",")))
 	return
 }
 
