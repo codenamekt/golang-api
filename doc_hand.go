@@ -60,7 +60,7 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 		if !id.Valid() {
 			writeError(w, 400, "Invalid id")
 		} else {
-			delete(req, "_id")
+			req["_id"] = id
 		}
 
 		_, err := c.UpsertId(id, req)

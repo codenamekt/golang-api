@@ -24,14 +24,25 @@ func TestDoc(t *testing.T) {
 	tests := []test{
 		{
 			Url:      "http://localhost/todo/todo",
+			Method:   "POST",
+			Body:     "{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}",
+			TestCode: 201,
+			TestHeader: map[string]string{
+				"Content-Length": "[68]",
+				"Content-Type":   "[application/json; charset=UTF-8]",
+			},
+			TestBody: "{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}",
+		},
+		{
+			Url:      "http://localhost/todo/todo",
 			Method:   "GET",
 			Body:     "",
 			TestCode: 200,
 			TestHeader: map[string]string{
-				"Content-Length": "[509]",
+				"Content-Length": "[70]",
 				"Content-Type":   "[application/json; charset=UTF-8]",
 			},
-			TestBody: "[{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"},{\"_id\":\"55977226a92da81351000001\",\"password\":\"batman\",\"username\":\"zzz\"},{\"_id\":\"5599a720a92da80ebb000001\",\"password\":\"batman\",\"username\":\"zzz\"},{\"_id\":\"5599ed80fdac67b86b370bc7\",\"password\":\"batman\",\"username\":\"zzz\"},{\"_id\":\"5599ee72a92da8138e000001\",\"password\":\"batman\",\"username\":\"robin\"},{\"_id\":\"5599f751a92da81755000001\",\"password\":\"batman\",\"username\":\"robin\"},{\"_id\":\"559768cca92da80f7e000004\",\"password\":\"batman5\",\"username\":\"robin\"}]",
+			TestBody: "[{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}]",
 		},
 		{
 			Url:      "http://localhost/todo/todo/559768cca92da80f7e000002",
@@ -43,6 +54,17 @@ func TestDoc(t *testing.T) {
 				"Content-Type":   "[application/json; charset=UTF-8]",
 			},
 			TestBody: "{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}",
+		},
+		{
+			Url:      "http://localhost/todo/todo/559768cca92da80f7e000002",
+			Method:   "DELETE",
+			Body:     "",
+			TestCode: 204,
+			TestHeader: map[string]string{
+				"Content-Length": "[0]",
+				"Content-Type":   "[application/json; charset=UTF-8]",
+			},
+			TestBody: "",
 		},
 	}
 
