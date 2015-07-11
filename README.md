@@ -9,6 +9,18 @@ go build
 ./mgo-api
 ```
 
-Usage
+TODO
 =====
-(TODO)
+
+Create CI
+	Branch
+	Travis
+	Docker
+	Deploy
+
+Test coverage
+=============
+
+`go test -coverprofile=c.out`
+
+`go tool cover -html=c.out`
