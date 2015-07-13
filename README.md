@@ -13,11 +13,8 @@ TODO
 =====
 
 - Use GoDeps
-- Create CI
-- Branch
-- Docker
-- Deploy
-Setup Coveralls.io
+- Create CI (Deploy Google Cloud?)
+- Coveralls.io
 
 Test coverage
 =============
