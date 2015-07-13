@@ -1,3 +1,9 @@
+Mgo Api [![Build Status](https://travis-ci.org/codenamekt/mgo-api.svg?branch=master)](https://travis-ci.org/codenamekt/mgo-api)
+=======
+Building a simple rest interface on top of mongo.
+
+
+
 Getting Started
 ===============
 ```go
@@ -11,7 +17,6 @@ TODO
 - Use GoDeps
 - Create CI
 - Branch
-- Travis
 - Docker
 - Deploy
 Setup Coveralls.io
@@ -20,4 +25,5 @@ Test coverage
 =============
 
 `go test -coverprofile=c.out`
+
 `go tool cover -html=c.out`
