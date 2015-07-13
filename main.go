@@ -13,7 +13,7 @@ var session *mgo.Session
 // Reads from environment variable MGO. (default="localhost:27017")
 func init() {
 	var err error
-	dial := os.Getenv("MGO")
+	dial := os.Getenv("MONGO_PORT_27017_TCP_ADDR")
 
 	session, err = mgo.Dial(dial)
 	if err != nil {
