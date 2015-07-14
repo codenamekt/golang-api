@@ -1,0 +1,4 @@
+test:
+  override:
+    - go get -u github.com/jstemmer/go-junit-report
+    - go test -v ./... -race | go-junit-report > report.xml
