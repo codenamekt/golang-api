@@ -20,7 +20,7 @@ TODO
 =====
 
 - Use GoDeps
-- Create CI (Deploy Google Cloud?)
+- Deploy to Google Cloud
 - Coveralls.io
 
 Test coverage

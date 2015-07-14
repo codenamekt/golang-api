@@ -1,4 +1,5 @@
 test:
   override:
-    - go get -u github.com/jstemmer/go-junit-report
-    - go test -v ./... -race | go-junit-report > report.xml
+    - mkdir -p $CIRCLE_TEST_REPORTS/gotest
+    - go get -v github.com/jstemmer/go-junit-report
+    - go test -v ./... -race | go-junit-report > $CIRCLE_TEST_REPORTS/gotest/junit.xml
