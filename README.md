@@ -2,8 +2,6 @@ Mgo Api [![Build Status](https://travis-ci.org/codenamekt/mgo-api.svg?branch=mas
 =======
 Building a simple rest interface on top of mongo.
 
-
-
 Getting Started
 ===============
 ```go
