@@ -1,3 +1,8 @@
+dependencies:
+  pre:
+    - curl -o $HOME/google-cloud-sdk.zip https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip
+    - unzip -q -d $HOME $HOME/google-cloud-sdk.zip
+
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/gotest

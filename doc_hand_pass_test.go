@@ -10,16 +10,8 @@ import (
 	"testing"
 )
 
-type test struct {
-	Url        string
-	Method     string
-	Body       string
-	TestCode   int
-	TestHeader map[string]string
-	TestBody   string
-}
-
-func TestDoc(t *testing.T) {
+// All these tests will be passing.
+func TestDocPass(t *testing.T) {
 
 	tests := []test{
 		{
