@@ -2,4 +2,5 @@ test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/gotest
     - go get -v github.com/jstemmer/go-junit-report
-    - go test -v ./... -race | go-junit-report > $CIRCLE_TEST_REPORTS/gotest/junit.xml
+    - go test -v ./... -race -coverprofile=coverage.txt -covermode=atomic | go-junit-report > $CIRCLE_TEST_REPORTS/gotest/junit.xml
+    - bash <(curl -s https://codecov.io/bash)
