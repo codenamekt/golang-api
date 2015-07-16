@@ -15,7 +15,7 @@ func TestDocPass(t *testing.T) {
 
 	tests := []test{
 		{
-			Url:      "http://localhost/todo/todo",
+			Url:      "http://localhost/foo/bar",
 			Method:   "POST",
 			Body:     "{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}",
 			TestCode: 201,
@@ -26,7 +26,7 @@ func TestDocPass(t *testing.T) {
 			TestBody: "{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}",
 		},
 		{
-			Url:      "http://localhost/todo/todo",
+			Url:      "http://localhost/foo/bar",
 			Method:   "GET",
 			Body:     "",
 			TestCode: 200,
@@ -37,7 +37,7 @@ func TestDocPass(t *testing.T) {
 			TestBody: "[{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}]",
 		},
 		{
-			Url:      "http://localhost/todo/todo/559768cca92da80f7e000002",
+			Url:      "http://localhost/foo/bar/559768cca92da80f7e000002",
 			Method:   "GET",
 			Body:     "",
 			TestCode: 200,
@@ -48,7 +48,7 @@ func TestDocPass(t *testing.T) {
 			TestBody: "{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}",
 		},
 		{
-			Url:      "http://localhost/todo/todo/559768cca92da80f7e000002",
+			Url:      "http://localhost/foo/bar/559768cca92da80f7e000002",
 			Method:   "DELETE",
 			Body:     "",
 			TestCode: 204,

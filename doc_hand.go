@@ -161,9 +161,12 @@ func DocGet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
 
-	id := bson.ObjectIdHex(vars["id"])
-	if !id.Valid() {
+	var id bson.ObjectId
+	if bson.IsObjectIdHex(vars["id"]) {
+		id = bson.ObjectIdHex(vars["id"])
+	} else {
 		writeError(w, 400, "Invalid id")
+		return
 	}
 
 	q := c.Find(bson.M{"_id": id})
@@ -211,9 +214,12 @@ func DocDelete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
 
-	id := bson.ObjectIdHex(vars["id"])
-	if !id.Valid() {
+	var id bson.ObjectId
+	if bson.IsObjectIdHex(vars["id"]) {
+		id = bson.ObjectIdHex(vars["id"])
+	} else {
 		writeError(w, 400, "Invalid id")
+		return
 	}
 
 	q := c.Find(bson.M{"_id": id})
