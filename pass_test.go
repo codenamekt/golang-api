@@ -1,19 +1,13 @@
 package main
 
 import (
-	"bytes"
-	"io/ioutil"
-	"net/http"
-	"net/http/httptest"
-	"strconv"
-	"strings"
 	"testing"
 )
 
 // All these tests will be passing.
 func TestDocPass(t *testing.T) {
 
-	tests := []test{
+	teststeps := []teststep{
 		{
 			Url:      "http://localhost/foo/bar",
 			Method:   "POST",
@@ -24,6 +18,28 @@ func TestDocPass(t *testing.T) {
 				"Content-Type":   "[application/json; charset=UTF-8]",
 			},
 			TestBody: "{\"_id\":\"559768cca92da80f7e000002\",\"password\":\"xyz\",\"username\":\"xyz\"}",
+		},
+		{
+			Url:      "http://localhost/",
+			Method:   "GET",
+			Body:     "",
+			TestCode: 200,
+			TestHeader: map[string]string{
+				"Content-Length": "[16]",
+				"Content-Type":   "[application/json; charset=UTF-8]",
+			},
+			TestBody: "[foo,local,user]",
+		},
+		{
+			Url:      "http://localhost/foo",
+			Method:   "GET",
+			Body:     "",
+			TestCode: 200,
+			TestHeader: map[string]string{
+				"Content-Length": "[20]",
+				"Content-Type":   "[application/json; charset=UTF-8]",
+			},
+			TestBody: "[bar,system.indexes]",
 		},
 		{
 			Url:      "http://localhost/foo/bar",
@@ -60,48 +76,7 @@ func TestDocPass(t *testing.T) {
 		},
 	}
 
-	for _, test := range tests {
-		testbody := bytes.NewBufferString(test.Body)
-		var body []byte
-		router := NewRouter()
-		resp := httptest.NewRecorder()
-		var req *http.Request
-
-		req, err := http.NewRequest(test.Method, test.Url, testbody)
-		if err != nil {
-			t.Fail()
-		}
-
-		router.ServeHTTP(resp, req)
-		if err == nil {
-			body, err = ioutil.ReadAll(resp.Body)
-		}
-
-		if resp.Code == test.TestCode {
-			t.Logf("Code: %s", strconv.Itoa(resp.Code))
-		} else {
-			t.Fail()
-		}
-
-		for key, value := range resp.Header() {
-			testvalue := strings.Join(value, ",")
-			testvalue = strings.Join([]string{"[", testvalue, "]"}, "")
-
-			if i, ok := test.TestHeader[key]; ok {
-				if i == testvalue {
-					t.Logf("%s: %s", key, value)
-				} else {
-					t.Errorf(i, "not equal", testvalue)
-				}
-			} else {
-				t.Fail()
-			}
-		}
-
-		if string(body) == test.TestBody {
-			t.Logf("Body: %s", body)
-		} else {
-			t.Errorf(string(body), "not equal", test.Body)
-		}
+	for _, test := range teststeps {
+		testRunner(test, t)
 	}
 }

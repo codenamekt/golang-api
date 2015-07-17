@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -24,12 +23,4 @@ func writeHttp(w http.ResponseWriter, status int, message string) {
 // write response as {"error": message}
 func writeError(w http.ResponseWriter, status int, message string) {
 	writeHttp(w, status, fmt.Sprintf("{\"error\":\"%s\"}", message))
-}
-
-func debug(data []byte, err error) {
-	if err == nil {
-		log.Printf("\n%s", data)
-	} else {
-		log.Fatalf("\n%s", err)
-	}
 }
