@@ -26,6 +26,8 @@ func testRunner(test teststep, t *testing.T) {
 	resp := httptest.NewRecorder()
 	var req *http.Request
 
+	t.Logf("%s %s", test.Method, test.Url)
+
 	req, err := http.NewRequest(test.Method, test.Url, testbody)
 	if err != nil {
 		t.Fail()

@@ -110,21 +110,25 @@ func DocPut(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
 		writeError(w, 500, "Error reading request body")
+		return
 	}
 	if err := r.Body.Close(); err != nil {
 		writeError(w, 500, "Error closing request body")
+		return
 	}
 
 	var req map[string]interface{}
 	if err := json.Unmarshal(body, &req); err != nil {
 		writeError(w, 500, "Body invalid json")
+		return
 	}
 
-	id := bson.ObjectIdHex(vars["id"])
-	if !id.Valid() {
-		writeError(w, 400, "Invalid id")
+	var id bson.ObjectId
+	if bson.IsObjectIdHex(vars["id"]) {
+		id = bson.ObjectIdHex(vars["id"])
 	} else {
-		req["_id"] = id
+		writeError(w, 400, "Invalid id")
+		return
 	}
 
 	_, err = c.UpsertId(id, req)
