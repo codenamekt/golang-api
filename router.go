@@ -12,7 +12,9 @@ var routes = []struct {
 	HandlerFunc http.HandlerFunc
 }{
 	{"DBIndex", "GET", "/", DBIndex},
+	{"DBDelete", "DELETE", "/{db}", DBDelete},
 	{"ColIndex", "GET", "/{db}", ColIndex},
+	{"ColDelete", "DELETE", "/{db}/{collection}", ColDelete},
 	{"DocIndex", "GET", "/{db}/{collection}", DocIndex},
 	{"DocPost", "POST", "/{db}/{collection}", DocPost},
 	{"DocPut", "PUT", "/{db}/{collection}/{id}", DocPut},

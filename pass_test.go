@@ -74,9 +74,32 @@ func TestDocPass(t *testing.T) {
 			},
 			TestBody: "",
 		},
+		{
+			Url:      "http://localhost/foo/bar",
+			Method:   "DELETE",
+			Body:     "",
+			TestCode: 204,
+			TestHeader: map[string]string{
+				"Content-Length": "[0]",
+				"Content-Type":   "[application/json; charset=UTF-8]",
+			},
+			TestBody: "",
+		},
+		{
+			Url:      "http://localhost/foo",
+			Method:   "DELETE",
+			Body:     "",
+			TestCode: 204,
+			TestHeader: map[string]string{
+				"Content-Length": "[0]",
+				"Content-Type":   "[application/json; charset=UTF-8]",
+			},
+			TestBody: "",
+		},
 	}
 
 	for _, test := range teststeps {
+		t.Logf("%s %s", test.Method, test.Url)
 		testRunner(test, t)
 	}
 }
