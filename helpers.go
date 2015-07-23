@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // write to http.ResponseWriter
@@ -23,4 +25,15 @@ func writeHttp(w http.ResponseWriter, status int, message string) {
 // write response as {"error": message}
 func writeError(w http.ResponseWriter, status int, message string) {
 	writeHttp(w, status, fmt.Sprintf("{\"error\":\"%s\"}", message))
+}
+
+// rand string generator
+func randSeq(n int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	rand.Seed(time.Now().Unix())
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }

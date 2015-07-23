@@ -58,7 +58,6 @@ func testRunner(test teststep, t *testing.T) {
 			t.Errorf("key %s not found", key)
 		}
 	}
-
 	if string(body) == test.TestBody {
 		t.Logf("Body: %s", body)
 	} else {

@@ -6,7 +6,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -16,20 +15,10 @@ func DocIndex(w http.ResponseWriter, r *http.Request) {
 	defer s.Close()
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
-
 	var out []map[string]interface{}
-	err := c.Find(nil).All(&out)
-	if err != nil {
-		log.Fatalf("ERROR: %s", err)
-		writeError(w, 500, "Error getting all documents")
-		return
-	}
 
-	res, err := json.Marshal(out)
-	if err != nil {
-		writeError(w, 500, "Error stringifying response")
-		return
-	}
+	_ = c.Find(nil).All(&out)
+	res, _ := json.Marshal(out)
 
 	writeHttp(w, 200, string(res))
 	return
@@ -42,15 +31,8 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	c := s.DB(vars["db"]).C(vars["collection"])
 
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		writeError(w, 500, "Error reading request body")
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		writeError(w, 500, "Error closing request body")
-		return
-	}
+	body, _ := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
+	_ = r.Body.Close()
 
 	var req map[string]interface{}
 	if err := json.Unmarshal(body, &req); err != nil {
@@ -60,6 +42,7 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 
 	if req["_id"] != nil {
 		var id bson.ObjectId
+
 		if bson.IsObjectIdHex(req["_id"].(string)) {
 			id = bson.ObjectIdHex(req["_id"].(string))
 			req["_id"] = id
@@ -68,17 +51,8 @@ func DocPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		_, err := c.UpsertId(id, req)
-		if err != nil {
-			writeError(w, 500, "Error upserting")
-			return
-		}
-
-		res, err := json.Marshal(req)
-		if err != nil {
-			writeError(w, 500, "Error stringifying query result")
-			return
-		}
+		_, _ = c.UpsertId(id, req)
+		res, _ := json.Marshal(req)
 
 		writeHttp(w, 201, string(res))
 	} else {
