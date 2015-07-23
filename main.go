@@ -22,6 +22,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	session.SetMode(mgo.Strong, true)
 }
 
 // serve on 8080
